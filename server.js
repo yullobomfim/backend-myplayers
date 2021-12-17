@@ -1,7 +1,11 @@
 var express = require("express")
 var app = express()
 var db = require("./database.js")
-
+const cors = require('cors');
+app.use(cors({
+    origin: 'http://192.168.1.123:8000/api/players',
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+}));
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -13,7 +17,8 @@ app.listen(HTTP_PORT, () => {
     console.log("Server running on port %PORT%".replace("%PORT%",HTTP_PORT))
 });
 
-app.get("/api/players", (req, res, next) => {
+
+app.get("/api/players", cors(), (req, res, next) => {
     var sql = "select * from players"
     var params = []
     db.all(sql, params, (err, rows) => {
@@ -26,6 +31,7 @@ app.get("/api/players", (req, res, next) => {
             "data":rows
         })
       });
+      console.log('fiz a requisicao com cors')
 });
 
 
@@ -84,4 +90,3 @@ app.post("/api/players/", (req, res, next) => {
 app.get("/api/", (req, res, next) => {
     res.json({"message":"Ok"})
 });
-

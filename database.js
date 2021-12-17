@@ -14,7 +14,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name text,
             country text,
-            team text UNIQUE,
+            team text,
             avatar text 
             )`, (err) => {
             if (err) {
